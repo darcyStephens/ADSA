@@ -87,7 +87,6 @@ int main()
     }
 
     vector<int> res = schoolAddition(n1, n2);
-    printVector(res);
 
     return 0;
 }
