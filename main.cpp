@@ -21,28 +21,23 @@ vector<int> schoolAddition(vector<int> n1, vector<int> n2)
     {
         swap(n1, n2);
     }
+    //fill smaller one with zeros
+    while (n2.size() < n1.size())
+    {
+        n2.insert(n2.begin(), 0);
+    }
 
-    // works if numbers are same length
-    // if numbers differ, shifts n2 forward
-    //  example 123 + 1 = 223
-    //  treats 1 as 100
-    // its because i am starting at n1.size()
     int carry = 0;
+
     int sum = 0;
 
     for (int i = n1.size() - 1; i >= 0; i--)
     {
-        if (i > n2.size())
-        {
-            sum = n1[i] + carry;
-        }
-        else
-        {
-            sum = n1[i] + n2[i] + carry;
-        }
-
-        result.push_back(sum);
+       sum = n1[i] + n2[i] + carry;
+       carry = sum / 10;
+       result.push_back(sum % 10);
     }
+
     if (carry)
     {
         result.push_back(carry);
