@@ -33,14 +33,10 @@ vector<int> schoolAddition(vector<int> n1, vector<int> n2, int base)
     //iterate from LSB to MSB
     for (int i = n1.size() - 1; i >= 0; i--)
     {
-       // cout << "carry is " << carry << endl;
         currSum = (n1[i] + n2[i] + carry);
-       // cout << "current sum is " << currSum << endl;
         carry = (currSum/base);
-       // cout << "new carry is " << carry << endl;
         res.push_back((currSum) % base);
-       // cout << "pushing into vector " << (currSum) % base << endl;
-       // cout << "  " << endl;
+       
     }
 
     //pushing in carry after summation if it is greater than zero
@@ -56,49 +52,44 @@ vector<int> schoolAddition(vector<int> n1, vector<int> n2, int base)
 
 int main()
 {
-    // read input, store in string input, inlcuding spaces
+    // Read input, store in string input, including spaces
     string input;
     getline(cin, input);
 
-    // set up 3 vectors
+    // Set up vectors for the two numbers and an integer for base
     vector<int> n1;
     vector<int> n2;
     int base;
 
-    // break into seperate numbers
-    int count = 0;
-    while (input.length() != 0)
-    {
-        if (input[0] == ' ')
-        {
-            input.erase(input.begin());
-            count++;
-        }
-        else
-        {
-            // convert to int
-            int num = input[0] - '0';
-            if (count == 0)
-            {
-                n1.push_back(num);
-            }
-            else if (count == 1)
-            {
-                n2.push_back(num);
-            }
-            else{
-                base = num;
-            }
+    // Split input into parts
+    size_t pos = input.find(' ');
+    string str1 = input.substr(0, pos);
+    input.erase(0, pos + 1);
 
-            input.erase(input.begin());
-        }
+    pos = input.find(' ');
+    string str2 = input.substr(0, pos);
+    input.erase(0, pos + 1);
+
+    string strBase = input;
+
+    // Convert string parts to respective integers
+    for (char digit : str1)
+    {
+        n1.push_back(digit - '0');
     }
 
+    for (char digit : str2)
+    {
+        n2.push_back(digit - '0');
+    }
+
+    base = stoi(strBase);
+
+    // Perform the addition
     vector<int> result = schoolAddition(n1, n2, base);
-    for (int num : result)
-    {
-        cout << num;
-    }
+
+    // Print the result
+    printVector(result);
 
     return 0;
 }
