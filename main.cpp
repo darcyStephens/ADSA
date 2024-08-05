@@ -13,37 +13,45 @@ void printVector(vector<int> vec)
 }
 
 // function to call
-vector<int> schoolAddition(vector<int> n1, vector<int> n2)
+vector<int> schoolAddition(vector<int> n1, vector<int> n2, int base)
 {
-    vector<int> result;
+    vector<int> res;
     // have n1 be the longer of the two digits
     if (n1.size() < n2.size())
     {
         swap(n1, n2);
     }
-    //fill smaller one with zeros
+    // fill smaller one with zeros
     while (n2.size() < n1.size())
     {
         n2.insert(n2.begin(), 0);
     }
-
+    //make variables
     int carry = 0;
+    int currSum = 0;
 
-    int sum = 0;
-
+    //iterate from LSB to MSB
     for (int i = n1.size() - 1; i >= 0; i--)
     {
-       sum = n1[i] + n2[i] + carry;
-       carry = sum / 10;
-       result.push_back(sum % 10);
+       // cout << "carry is " << carry << endl;
+        currSum = (n1[i] + n2[i] + carry);
+       // cout << "current sum is " << currSum << endl;
+        carry = (currSum/base);
+       // cout << "new carry is " << carry << endl;
+        res.push_back((currSum) % base);
+       // cout << "pushing into vector " << (currSum) % base << endl;
+       // cout << "  " << endl;
     }
 
-    if (carry)
+    //pushing in carry after summation if it is greater than zero
+    if (carry > 0)
     {
-        result.push_back(carry);
+        res.push_back(carry);
     }
-    reverse(result.begin(), result.end());
-    return result;
+
+    //reversing the result vector so it works
+    reverse(res.begin(), res.end());
+    return res;
 }
 
 int main()
@@ -55,7 +63,7 @@ int main()
     // set up 3 vectors
     vector<int> n1;
     vector<int> n2;
-    vector<int> n3;
+    int base;
 
     // break into seperate numbers
     int count = 0;
@@ -78,15 +86,19 @@ int main()
             {
                 n2.push_back(num);
             }
-            else
-            {
-                n3.push_back(num);
+            else{
+                base = num;
             }
+
             input.erase(input.begin());
         }
     }
 
-    vector<int> res = schoolAddition(n1, n2);
+    vector<int> result = schoolAddition(n1, n2, base);
+    for (int num : result)
+    {
+        cout << num;
+    }
 
     return 0;
 }
