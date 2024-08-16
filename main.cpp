@@ -5,23 +5,22 @@
 using namespace std;
 vector<int> removeLeadingZeros(vector<int> vec)
 {
-    //find first non zero
-    int Z =0;
+    // find first non zero
+    int Z = 0;
     int len = vec.size();
     while (vec[Z] == 0)
     {
-        if(Z > len)
+        if (Z > len)
         {
             break;
         }
-        
+
         Z++;
     }
 
-    //place into new vector
+    // place into new vector
     vector<int> clean(vec.begin() + Z, vec.end());
     return clean;
-
 }
 vector<int> schoolAddition(vector<int> n1, vector<int> n2, int base)
 {
@@ -51,7 +50,7 @@ void printVector(const vector<int> &vec)
     {
         cout << num;
     }
-    cout << endl;
+    cout <<" ";
 }
 
 vector<int> multiplySingle(int n1, int n2, int base)
@@ -115,7 +114,6 @@ vector<int> schoolSubtraction(vector<int> n1, vector<int> n2, int base)
     while (res.size() > 1 && res.back() == 0)
         res.pop_back();
     reverse(res.begin(), res.end());
-    printVector(res);
     return res;
 }
 
@@ -126,7 +124,7 @@ vector<int> Karatsuba(vector<int> n1, vector<int> n2, int base)
     while (n2.size() < n1.size())
         n2.insert(n2.begin(), 0);
     int n = n1.size();
-    
+
     if (n == 0)
         return {0};
     if (n == 1)
@@ -134,13 +132,12 @@ vector<int> Karatsuba(vector<int> n1, vector<int> n2, int base)
         return multiplySingle(n1[0], n2[0], base);
     }
 
-    int mid = n/2;
+    int mid = n / 2;
 
     vector<int> X1(n1.begin(), n1.begin() + mid);
     vector<int> X2(n1.begin() + mid, n1.end());
     vector<int> Y1(n2.begin(), n2.begin() + mid);
     vector<int> Y2(n2.begin() + mid, n2.end());
-    //printVector(X1);
 
     vector<int> P2 = Karatsuba(X1, Y1, base);
     vector<int> P0 = Karatsuba(X2, Y2, base);
@@ -182,17 +179,12 @@ int main()
         n2.push_back(digit - '0');
     base = stoi(strBase);
 
-    
-
-
     vector<int> result = schoolAddition(n1, n2, base);
-    //cout << "Addition: ";
     printVector(result);
 
     vector<int> kat = Karatsuba(n1, n2, base);
     kat = removeLeadingZeros(kat);
-   // cout << "Multiplication: ";
-   printVector(kat);
+    printVector(kat);
 
     return 0;
 }
