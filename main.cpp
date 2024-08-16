@@ -7,8 +7,14 @@ vector<int> removeLeadingZeros(vector<int> vec)
 {
     //find first non zero
     int Z =0;
-    while(vec[Z] == 0)
+    int len = vec.size();
+    while (vec[Z] == 0)
     {
+        if(Z > len)
+        {
+            break;
+        }
+        
         Z++;
     }
 
@@ -67,9 +73,10 @@ vector<int> multiplySingle(int n1, int n2, int base)
     return res;
 }
 
-vector<int> multiplyByBasePower(const vector<int> &num, int power)
+vector<int> multiplyByBasePower(vector<int> num, int power)
 {
-    vector<int> res = num;
+    vector<int> res;
+    res = num;
     while (power--)
     {
         res.push_back(0);
@@ -77,8 +84,13 @@ vector<int> multiplyByBasePower(const vector<int> &num, int power)
     return res;
 }
 
-vector<int> schoolSubtraction(const vector<int> &n1, const vector<int> &n2, int base)
+vector<int> schoolSubtraction(vector<int> n1, vector<int> n2, int base)
 {
+    while (n1.size() < n2.size())
+        n1.insert(n1.begin(), 0);
+    while (n2.size() < n1.size())
+        n2.insert(n2.begin(), 0);
+
     vector<int> res;
     vector<int> tempN1 = n1;
     while (tempN1.size() < n2.size())
@@ -87,7 +99,7 @@ vector<int> schoolSubtraction(const vector<int> &n1, const vector<int> &n2, int 
     int borrow = 0;
     for (int i = tempN1.size() - 1; i >= 0; i--)
     {
-        int diff = tempN1[i] - (i < n2.size() ? n2[i] : 0) - borrow;
+        int diff = tempN1[i] - (n2[i]) - borrow;
         if (diff < 0)
         {
             diff += base;
@@ -103,6 +115,7 @@ vector<int> schoolSubtraction(const vector<int> &n1, const vector<int> &n2, int 
     while (res.size() > 1 && res.back() == 0)
         res.pop_back();
     reverse(res.begin(), res.end());
+    printVector(res);
     return res;
 }
 
@@ -113,6 +126,7 @@ vector<int> Karatsuba(vector<int> n1, vector<int> n2, int base)
     while (n2.size() < n1.size())
         n2.insert(n2.begin(), 0);
     int n = n1.size();
+    
     if (n == 0)
         return {0};
     if (n == 1)
@@ -120,12 +134,13 @@ vector<int> Karatsuba(vector<int> n1, vector<int> n2, int base)
         return multiplySingle(n1[0], n2[0], base);
     }
 
-    int mid = n / 2;
+    int mid = n/2;
 
     vector<int> X1(n1.begin(), n1.begin() + mid);
     vector<int> X2(n1.begin() + mid, n1.end());
     vector<int> Y1(n2.begin(), n2.begin() + mid);
     vector<int> Y2(n2.begin() + mid, n2.end());
+    //printVector(X1);
 
     vector<int> P2 = Karatsuba(X1, Y1, base);
     vector<int> P0 = Karatsuba(X2, Y2, base);
@@ -135,7 +150,6 @@ vector<int> Karatsuba(vector<int> n1, vector<int> n2, int base)
 
     vector<int> P1 = Karatsuba(sumX1X2, sumY1Y2, base);
 
-    // Correct P1 calculation
     P1 = schoolSubtraction(P1, schoolAddition(P2, P0, base), base);
 
     P2 = multiplyByBasePower(P2, 2 * (n - mid));
@@ -168,6 +182,9 @@ int main()
         n2.push_back(digit - '0');
     base = stoi(strBase);
 
+    
+
+
     vector<int> result = schoolAddition(n1, n2, base);
     //cout << "Addition: ";
     printVector(result);
@@ -175,7 +192,7 @@ int main()
     vector<int> kat = Karatsuba(n1, n2, base);
     kat = removeLeadingZeros(kat);
    // cout << "Multiplication: ";
-    printVector(kat);
+   printVector(kat);
 
     return 0;
 }
