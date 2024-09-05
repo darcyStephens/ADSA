@@ -231,3 +231,29 @@ class AVL {
 
     }
 }
+
+public class Main {
+    public static void main(String[] args) {
+        Node root = null;
+
+        // Constructing tree given in the above figure
+        root = AVL.insert(root, 9);
+        root = AVL.insert(root, 5);
+        root = AVL.insert(root, 10);
+        root = AVL.insert(root, 0);
+        root = AVL.insert(root, 6);
+        root = AVL.insert(root, 11);
+        root = AVL.insert(root, -1);
+        root = AVL.insert(root, 1);
+        root = AVL.insert(root, 2);
+
+        System.out.println("Preorder traversal of the constructed AVL tree is:");
+        Traversals.preorder(root);  // Use correct method name and class
+
+        // Deleting node 10
+        root = AVL.delete(root, 10);
+
+        System.out.println("\nPreorder traversal after deletion of 10:");
+        Traversals.preorder(root);  // Use correct method name and class
+    }
+}
