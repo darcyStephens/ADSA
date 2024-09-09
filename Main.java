@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 class Node {
     int data;
     Node left, right;
@@ -5,12 +7,40 @@ class Node {
 
     public Node(int value) {
         data = value;
+        //initialise to null pointers
         left = right = null;
         height = 1;
     }
 }
 
+//class which holds methods to traverse the tree
 class Traversals {
+
+    static void printCurrentLevel(Node root, int level)
+    {
+        if (root == null)
+            return;
+        if (level == 1)
+            System.out.print(root.data + " ");
+        else if (level > 1) {
+            printCurrentLevel(root.left, level - 1);
+            printCurrentLevel(root.right, level - 1);
+        }
+    }
+    static void levelorder(Node node)
+    {
+        if(node == null)
+        {
+            return;
+        }
+        for(int i = 1; i <= node.height; i++)
+        {
+            printCurrentLevel(node, i);
+
+        }
+        
+
+    }
     static void inorder(Node node) {
         if (node == null) {
             return;
@@ -43,6 +73,7 @@ class Traversals {
 }
 
 class AVL {
+
     // utility function to get the height of the tree
     static int height(Node node) {
         if (node == null) {
@@ -53,35 +84,37 @@ class AVL {
 
     static Node Rotate_Right(Node y) {
         Node x = y.left;
-        Node T2 = x.right;
+        Node store_right = x.right;
 
-        // perform rotation
+        // performing rotation
         x.right = y;
-        y.left = T2;
+        y.left = store_right;
 
         // updating heights
         y.height = 1 + Math.max(height(y.left), height(y.right));
         x.height = 1 + Math.max(height(x.left), height(x.right));
 
-        // return new root
+        // returning new root
         return x;
     }
 
     static Node Rotate_Left(Node x) {
         Node y = x.right;
-        Node T2 = y.left;
+        Node store_left = y.left;
 
-        // perform rotation
+        // performing rotation
         y.left = x;
-        x.right = T2;
+        x.right = store_left;
 
-        // upadate heights
+        // upadating heights
         x.height = 1 + Math.max(height(x.left), height(x.right));
         y.height = 1 + Math.max(height(y.left), height(y.right));
 
-        return x;
+        //returning new roots
+        return y;
     }
 
+    
     static int getBalance(Node node) {
         if (node == null) {
             return 0;
@@ -197,6 +230,10 @@ class AVL {
                 // delete the kid
                 root.right = delete(root.right, temp.data);
             }
+            if(root == null)
+            {
+                return root;
+            }
 
         }
 
@@ -232,28 +269,97 @@ class AVL {
     }
 }
 
+//fun task to do if i find time, see if i can cut down how much code i have
 public class Main {
     public static void main(String[] args) {
+
+        //scan for input
+        Scanner scanner = new Scanner(System.in);
+        String inputString = scanner.nextLine();
+        scanner.close();
+
+        //splitting with space as the delim
+        String[] instructions = inputString.split(" ");
+
         Node root = null;
 
-        // Constructing tree given in the above figure
-        root = AVL.insert(root, 9);
-        root = AVL.insert(root, 5);
-        root = AVL.insert(root, 10);
-        root = AVL.insert(root, 0);
-        root = AVL.insert(root, 6);
-        root = AVL.insert(root, 11);
-        root = AVL.insert(root, -1);
-        root = AVL.insert(root, 1);
-        root = AVL.insert(root, 2);
+        for(int i = 0; i < instructions.length -1; i++)
+        {
+            //rename this variable
+            String dickNUTS = instructions[i];
+            //breaking up the operation and value
+            char operation = dickNUTS.charAt(0);
+            int value = Integer.parseInt(dickNUTS.substring(1));
 
-        System.out.println("Preorder traversal of the constructed AVL tree is:");
-        Traversals.preorder(root);  // Use correct method name and class
+            if(operation == 'A')
+            {
+                root = AVL.insert(root, value);
+            }
+            else if (operation == 'D')
+            {
+                root = AVL.delete(root, value);
+            }
 
-        // Deleting node 10
-        root = AVL.delete(root, 10);
+        }
+        String final_instruction = instructions[instructions.length - 1];
+        if(final_instruction.equals("PRE"))
+        {
+            if(root == null)
+            {
+                System.out.println("EMPTY");
+            }
+            else
+            {
+                Traversals.preorder(root);
+                System.out.println();
 
-        System.out.println("\nPreorder traversal after deletion of 10:");
-        Traversals.preorder(root);  // Use correct method name and class
+            }
+
+        }
+
+        else if(final_instruction.equals("POST"))
+        {
+            if(root == null)
+            {
+                System.out.println("EMPTY");
+            }
+            else
+            {
+                Traversals.postorder(root);
+                System.out.println();
+
+            }
+
+        }
+        else if(final_instruction.equals("IN"))
+        {
+            if(root == null)
+            {
+                System.out.println("EMPTY");
+            }
+            else
+            {
+                Traversals.inorder(root);
+                System.out.println();
+
+            }
+
+        }
+        else if(final_instruction.equals("LVL"))
+        {
+            if(root == null)
+            {
+                System.out.println("EMPTY");
+            }
+            else
+            {
+                Traversals.levelorder(root);
+                System.out.println();
+
+            }
+
+        }
+
+
     }
 }
