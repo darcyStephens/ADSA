@@ -7,16 +7,17 @@ class Node {
 
     public Node(int value) {
         data = value;
-        // initialise to null pointers
+        //initialise to null pointers
         left = right = null;
         height = 1;
     }
 }
 
-// class which holds methods to traverse the tree
+//class which holds methods to traverse the tree
 class Traversals {
 
-    static void printCurrentLevel(Node root, int level) {
+    static void printCurrentLevel(Node root, int level)
+    {
         if (root == null)
             return;
         if (level == 1)
@@ -26,18 +27,20 @@ class Traversals {
             printCurrentLevel(root.right, level - 1);
         }
     }
-
-    static void levelorder(Node node) {
-        if (node == null) {
+    static void levelorder(Node node)
+    {
+        if(node == null)
+        {
             return;
         }
-        for (int i = 1; i <= node.height; i++) {
+        for(int i = 1; i <= node.height; i++)
+        {
             printCurrentLevel(node, i);
 
         }
+        
 
     }
-
     static void inorder(Node node) {
         if (node == null) {
             return;
@@ -107,16 +110,29 @@ class AVL {
         x.height = 1 + Math.max(height(x.left), height(x.right));
         y.height = 1 + Math.max(height(y.left), height(y.right));
 
-        // returning new roots
+        //returning new roots
         return y;
     }
 
+    
     static int getBalance(Node node) {
         if (node == null) {
             return 0;
         }
         int balance = height(node.left) - height(node.right);
         return balance;
+    }
+
+    static Node minValueNode(Node node)
+    {
+        Node current = node;
+
+        //loop down to find
+        while(current.left != null)
+        {
+            current = current.left;
+        }
+        return current;
     }
 
     static Node insert(Node node, int data) {
@@ -172,17 +188,8 @@ class AVL {
         return node;
     }
 
+
     // go through left subtree and find the right most
-
-    static Node maxValueNode(Node node) {
-        Node current = node;
-
-        // loop down to find the rightmost leaf in the left subtree
-        while (current.right != null) {
-            current = current.right;
-        }
-        return current;
-    }
 
     static Node delete(Node root, int data) {
         // standard null case
@@ -199,7 +206,6 @@ class AVL {
         else if (data > root.data) {
             root.right = delete(root.right, data);
         }
-
         // data is here
         else {
             // node with only one child or no child
@@ -218,20 +224,20 @@ class AVL {
                 }
             } else {
                 // node with two kids
-                // get the largest node in the left subtree (predecessor)
-                Node temp = maxValueNode(root.left);
+                // get smallest in right subtree
+                Node temp = minValueNode(root.right);
 
-                // copy the predecessor's data to the current node
+                // copy the kid
                 root.data = temp.data;
 
-                // delete the predecessor
-                root.left = delete(root.left, temp.data);
+                // delete the kid
+                root.right = delete(root.right, temp.data);
             }
-        }
+            if(root == null)
+            {
+                return root;
+            }
 
-        // if the tree had only one node
-        if (root == null) {
-            return root;
         }
 
         // update the height of the current node
@@ -239,6 +245,8 @@ class AVL {
 
         // get balance factor of the node
         int balance = getBalance(root);
+        // If this node becomes unbalanced, then
+        // there are 4 cases
 
         // Left Left Case
         if (balance > 1 && getBalance(root.left) >= 0)
@@ -259,44 +267,52 @@ class AVL {
             root.right = Rotate_Right(root.right);
             return Rotate_Left(root);
         }
-
         return root;
-    }
 
+    }
 }
-// fun task to do if i find time, see if i can cut down how much code i have
+
+//fun task to do if i find time, see if i can cut down how much code i have
 public class main {
     public static void main(String[] args) {
 
-        // scan for input
+        //scan for input
         Scanner scanner = new Scanner(System.in);
         String inputString = scanner.nextLine();
         scanner.close();
 
-        // splitting with space as the delim
+        //splitting with space as the delim
         String[] instructions = inputString.split(" ");
 
         Node root = null;
 
-        for (int i = 0; i < instructions.length - 1; i++) {
-            // rename this variable
+        for(int i = 0; i < instructions.length -1; i++)
+        {
+            //rename this variable
             String dickNUTS = instructions[i];
-            // breaking up the operation and value
+            //breaking up the operation and value
             char operation = dickNUTS.charAt(0);
             int value = Integer.parseInt(dickNUTS.substring(1));
 
-            if (operation == 'A') {
+            if(operation == 'A')
+            {
                 root = AVL.insert(root, value);
-            } else if (operation == 'D') {
+            }
+            else if (operation == 'D')
+            {
                 root = AVL.delete(root, value);
             }
 
         }
         String final_instruction = instructions[instructions.length - 1];
-        if (final_instruction.equals("PRE")) {
-            if (root == null) {
+        if(final_instruction.equals("PRE"))
+        {
+            if(root == null)
+            {
                 System.out.println("EMPTY");
-            } else {
+            }
+            else
+            {
                 Traversals.preorder(root);
                 System.out.println();
 
@@ -304,34 +320,49 @@ public class main {
 
         }
 
-        else if (final_instruction.equals("POST")) {
-            if (root == null) {
+        else if(final_instruction.equals("POST"))
+        {
+            if(root == null)
+            {
                 System.out.println("EMPTY");
-            } else {
+            }
+            else
+            {
                 Traversals.postorder(root);
                 System.out.println();
 
             }
 
-        } else if (final_instruction.equals("IN")) {
-            if (root == null) {
+        }
+        else if(final_instruction.equals("IN"))
+        {
+            if(root == null)
+            {
                 System.out.println("EMPTY");
-            } else {
+            }
+            else
+            {
                 Traversals.inorder(root);
                 System.out.println();
 
             }
 
-        } else if (final_instruction.equals("LVL")) {
-            if (root == null) {
+        }
+        else if(final_instruction.equals("LVL"))
+        {
+            if(root == null)
+            {
                 System.out.println("EMPTY");
-            } else {
+            }
+            else
+            {
                 Traversals.levelorder(root);
                 System.out.println();
 
             }
 
         }
+
 
     }
 }
