@@ -270,7 +270,7 @@ class AVL {
 }
 
 //fun task to do if i find time, see if i can cut down how much code i have
-public class Main {
+public class main {
     public static void main(String[] args) {
 
         //scan for input
