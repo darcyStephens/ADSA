@@ -104,7 +104,7 @@ void Insert(struct Hash_Table *HT, string value)
   
     //key doesn't exist
     pos = Hash_Value(last_letter);
-    
+    //std::cout << "hash value for " << value << " is " << pos <<endl;
     
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
     Intialize_Node(new_node, value);
@@ -124,6 +124,7 @@ void Insert(struct Hash_Table *HT, string value)
     }
 
     HT->array[pos] = new_node;
+    //cout<<"inserting " << value << " at " << pos<<endl;
     HT->number_of_elements++;
     return;
 }
