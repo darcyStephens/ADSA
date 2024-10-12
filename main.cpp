@@ -101,15 +101,10 @@ void Insert(struct Hash_Table *HT, string value)
     int pos = Search(HT, last_letter);
 
     // key already exists
-    if (pos != -1)
-    {
-       // return;
-    }
-    else
-    {
-        //key doesn't exist
-        pos = Hash_Value(last_letter);
-    }
+  
+    //key doesn't exist
+    pos = Hash_Value(last_letter);
+    
     
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
     Intialize_Node(new_node, value);
