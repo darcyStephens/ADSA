@@ -136,7 +136,7 @@ void Insert(struct Hash_Table *HT, string value)
 void Display_Hash_Table(struct Hash_Table* HT) {
     for (int i = 0; i < HT->capacity; i++) {
         if (HT->array[i] != NULL && !HT->array[i]->tombstone) {
-            cout << HT->array[i]->value;
+            cout << HT->array[i]->value << " ";
         } 
     }
 }
@@ -148,10 +148,11 @@ int main()
     string input;
     getline(cin, input);
     int last_space = 0;
+    int length = input.length();
 
-    for (int i = 0; i <= input.length(); i++)
+    for(int i = 0; i <= length; i++)
     {
-        if (input[i] == ' ')
+        if (i == input.length() || input[i] == ' ')
         {
             string values = input.substr(last_space, i - last_space);  // Extracting the word correctly
             last_space = i + 1;
