@@ -81,9 +81,17 @@ void Delete(struct Hash_Table *HT, string value)
         //key not found
         return;
     }
-    else{
-        HT->array[pos]->tombstone = true;
+    
+    while(HT->array[pos] != NULL && !HT->array[pos]->tombstone)
+    {
+        if(HT->array[pos]->value == value)
+        {
+            HT->array[pos]->tombstone = true;
+    
+        }
+        pos = (pos + 1) % HT->capacity; 
     }
+    
 }
 void Insert(struct Hash_Table *HT, string value)
 {
@@ -95,7 +103,7 @@ void Insert(struct Hash_Table *HT, string value)
     // key already exists
     if (pos != -1)
     {
-        return;
+       // return;
     }
     else
     {
