@@ -136,10 +136,8 @@ void Insert(struct Hash_Table *HT, string value)
 void Display_Hash_Table(struct Hash_Table* HT) {
     for (int i = 0; i < HT->capacity; i++) {
         if (HT->array[i] != NULL && !HT->array[i]->tombstone) {
-            cout << "Index: " << i << " | Key: " << HT->array[i]->key << " | Value: " << HT->array[i]->value << endl;
-        } else {
-            cout << "Index: " << i << " | Empty" << endl;
-        }
+            cout << HT->array[i]->value << endl;
+        } 
     }
 }
 
