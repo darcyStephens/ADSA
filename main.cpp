@@ -136,7 +136,7 @@ void Insert(struct Hash_Table *HT, string value)
 void Display_Hash_Table(struct Hash_Table* HT) {
     for (int i = 0; i < HT->capacity; i++) {
         if (HT->array[i] != NULL && !HT->array[i]->tombstone) {
-            cout << HT->array[i]->value << endl;
+            cout << HT->array[i]->value;
         } 
     }
 }
@@ -151,7 +151,7 @@ int main()
 
     for (int i = 0; i <= input.length(); i++)
     {
-        if (i == input.length() || input[i] == ' ')
+        if (input[i] == ' ')
         {
             string values = input.substr(last_space, i - last_space);  // Extracting the word correctly
             last_space = i + 1;
