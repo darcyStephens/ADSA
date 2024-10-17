@@ -42,8 +42,11 @@ int Hash_Value(char last_letter)
     return last_letter - 'a';
 }
 
-int Search(struct Hash_Table *HT, char key)
+int Search(struct Hash_Table *HT, string value)
 {
+    cout<< "searching"<< endl;
+    char key = value[value.length() - 1];
+
     int pos = Hash_Value(key);
 
     // If the position and the next are both NULL
@@ -62,6 +65,12 @@ int Search(struct Hash_Table *HT, char key)
         {
             return pos;
         }
+        //checking if the values match
+        if (HT->array[pos] != NULL && !HT->array[pos]->tombstone && HT->array[pos]->value == value)
+        {
+            cout<<"value: " <<value << "matches: " << HT->array[pos]->value;
+            return -2;
+        }
 
         //go to next element in array
         pos = (pos + 1) % HT->capacity; 
@@ -75,7 +84,7 @@ int Search(struct Hash_Table *HT, char key)
 void Delete(struct Hash_Table *HT, string value)
 {
     char last_letter = value[value.length() - 1];
-    int pos = Search(HT, last_letter);
+    int pos = Search(HT, value);
     if(pos == -1)
     {
         //key not found
@@ -98,12 +107,16 @@ void Insert(struct Hash_Table *HT, string value)
 
     char last_letter = value[value.length() - 1];
     // check key already exists
-    int pos = Search(HT, last_letter);
+    int search = Search(HT, value);
+    if(search == -2)
+    {
+        return;
+    }
 
     // key already exists
   
     //key doesn't exist
-    pos = Hash_Value(last_letter);
+    int pos = Hash_Value(last_letter);
     //std::cout << "hash value for " << value << " is " << pos <<endl;
     
     struct node *new_node = (struct node *)malloc(sizeof(struct node));
