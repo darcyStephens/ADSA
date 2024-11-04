@@ -17,6 +17,7 @@ int convertCost(char c)
 class DSU
 {
 public:
+    //use vectors because it is easier
     vector<int> parent;
     vector<int> rank;
 
@@ -32,7 +33,13 @@ public:
         {
             return target;
         }
+        //set the index to the result
         return parent[target] = find(parent[target]);
+
+        //find(5)
+        //parent[5] = -1
+        //return 5
+        //parent[5] = 5
     }
 
     bool unite(int x, int y)
